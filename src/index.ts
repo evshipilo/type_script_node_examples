@@ -1,14 +1,598 @@
-// console.log("Добро пожаловать на лекцию по TypeScript в Node.js!");
+// // === Типизация переменных в TypeScript ===
 
-// // Пример базового TypeScript-кода
-// const greet = (name: string): string => {
-//     return `Привет, ${name}!`;
+// // ✅ Примитивные типы
+// // Примитивные типы включают string, number, boolean, bigint, symbol, null и undefined.
+
+// const name1: string = "Alice"; // Строка
+// const age: number = 25; // Число
+// const isStudent: boolean = true; // Булево значение
+// const bigNumber: bigint = 9007199254740991n; // Большое число
+// const uniqueId: symbol = Symbol("id"); // Символ
+// const emptyValue: null = null; // Null
+// const notAssigned: undefined = undefined; // Undefined
+
+// // Попытка присвоить значение другого типа вызовет ошибку
+// // name = 123; // Ошибка: Type 'number' is not assignable to type 'string'
+
+// // ✅ Объектные типы
+// // Объектные типы включают object, Array, Function и другие сложные структуры.
+
+// // Объект
+// const user: object = { id: 1, name: "Alice" };
+
+// // Массив
+// const numbers: number[] = [1, 2, 3, 4, 5]; // Массив чисел
+// const strings: Array<string> = ["Alice", "Bob", "Charlie"]; // Альтернативный синтаксис
+
+// // Функция
+// const greet: (name: string) => string = (name) => `Hello, ${name}!`;
+// console.log(greet("Alice")); // Hello, Alice!
+
+// // ✅ Специальные типы
+// // Специальные типы включают any, unknown, never и void.
+
+// // Тип any (избегайте его использования, если возможно)
+// let dynamicValue: any = "Hello";
+// dynamicValue = 42; // Допустимо, но небезопасно
+
+// // Тип unknown (более безопасная альтернатива any)
+// let unknownValue: unknown = "Hello";
+// // console.log(unknownValue.toUpperCase()); // Ошибка: Object is of type 'unknown'
+// if (typeof unknownValue === "string") {
+//   console.log(unknownValue.toUpperCase()); // HELLO
+// }
+
+// // Тип void (для функций, которые ничего не возвращают)
+// function logMessage(message: string): void {
+//   console.log(message);
+// }
+// logMessage("This is a message");
+
+// // Тип never (для функций, которые никогда не завершаются корректно)
+// function throwError(message: string): never {
+//   throw new Error(message);
+// }
+
+// // ✅ Пользовательские типы
+// // TypeScript позволяет создавать собственные типы с помощью interface, type, enum, union и intersection.
+
+// // Интерфейс
+// interface User {
+//   id: number;
+//   name: string;
+//   email: string;
+//   age?: number; // Необязательное поле
+// }
+
+// const user1: User = {
+//   id: 1,
+//   name: "Alice",
+//   email: "alice@example.com",
 // };
 
-// console.log(greet("участник"));
+// // Тип
+// type Point = {
+//   x: number;
+//   y: number;
+// };
+
+// const point: Point = { x: 10, y: 20 };
+
+// // Перечисление (enum)
+// enum Color {
+//   Red = "RED",
+//   Green = "GREEN",
+//   Blue = "BLUE",
+// }
+
+// const favoriteColor: Color = Color.Red;
+// console.log(favoriteColor); // RED
+
+// // Объединение типов (union)
+// type ID = string | number;
+
+// const userId: ID = 123; // Допустимо
+// const anotherUserId: ID = "abc"; // Допустимо
+
+// // Пересечение типов (intersection)
+// type Admin = User & { role: string };
+
+// const admin: Admin = {
+//   id: 1,
+//   name: "Alice",
+//   email: "alice@example.com",
+//   role: "Administrator",
+// };
+
+// // ✅ Type Inference (Автоматическое определение типов)
+// // TypeScript может автоматически определять тип переменной, если ей сразу присвоено значение.
+
+// let autoName = "Alice"; // Тип: string
+// let autoAge = 25; // Тип: number
+// let isActive = true; // Тип: boolean
+
+// // Попытка присвоить значение другого типа вызовет ошибку
+// // autoName = 123; // Ошибка: Type 'number' is not assignable to type 'string'
+
+// // ✅ Когда лучше явно указывать тип?
+// // 1. Когда переменная может принимать значения разных типов в будущем.
+// let id: string | number; // Переменная может быть строкой или числом
+// id = 123; // Допустимо
+// id = "abc"; // Допустимо
+
+// // 2. Когда тип не очевиден из контекста.
+// const parseJson = (json: string): object => JSON.parse(json);
+
+// // 3. Когда вы хотите улучшить читаемость и документацию.
+// interface Product {
+//   id: number;
+//   name: string;
+//   price: number;
+// }
+
+// const product: Product = { id: 1, name: "Laptop", price: 1000 };
+
+
+
+// // ✅ Пример использования утилит TypeScript
+// // TypeScript предоставляет утилиты для работы с типами, такие как Partial, Pick, Omit.
+
+// // Partial: делает все поля необязательными
+// const partialUser: Partial<User> = { name: "Alice" };
+
+// // Pick: выбирает только указанные поля
+// const pickedUser: Pick<User, "id" | "name"> = { id: 1, name: "Alice" };
+
+// // Omit: исключает указанные поля
+// const omittedUser: Omit<User, "email"> = { id: 1, name: "Alice", age: 25 };
+
+
 
 
 // ----------------------------------------------------------------------------
+
+
+
+// // ===== Массивы и кортежи в TypeScript ===
+
+// // ✅ Массивы
+// // Массивы в TypeScript могут быть типизированы двумя способами:
+// // 1. Синтаксис через квадратные скобки (T[])
+// // 2. Обобщенный синтаксис (Array<T>)
+
+// // === Примеры массивов одного типа ===
+
+// // Массив чисел
+// const numbers: number[] = [1, 2, 3, 4, 5]; // Синтаксис через квадратные скобки
+// const moreNumbers: Array<number> = [6, 7, 8, 9, 10]; // Обобщенный синтаксис
+
+// // Массив строк
+// const names: string[] = ["Alice", "Bob", "Charlie"];
+// const moreNames: Array<string> = ["David", "Eve", "Frank"];
+
+// // Попытка добавить элемент другого типа вызовет ошибку
+// // numbers.push("string"); // Ошибка: Argument of type 'string' is not assignable to parameter of type 'number'
+
+// // Пример использования
+// console.log(numbers); // [1, 2, 3, 4, 5]
+// console.log(names); // ["Alice", "Bob", "Charlie"]
+
+// // === Примеры массивов с несколькими типами (объединение типов) ===
+
+// // Массив, который может содержать строки и числа
+// const mixedArray: (string | number)[] = [1, "Alice", 2, "Bob"];
+
+// // Добавление элементов допустимых типов
+// mixedArray.push(3); // ОК
+// mixedArray.push("Charlie"); // ОК
+
+// // Попытка добавить элемент другого типа вызовет ошибку
+// // mixedArray.push(true); // Ошибка: Argument of type 'boolean' is not assignable to parameter of type 'string | number'
+
+// console.log(mixedArray); // [1, "Alice", 2, "Bob", 3, "Charlie"]
+
+// // === Пример массивов объектов ===
+
+// // Интерфейс для описания структуры объекта
+// interface User {
+//   id: number;
+//   name: string;
+// }
+
+// // Массив объектов типа User
+// const users: User[] = [
+//   { id: 1, name: "Alice" },
+//   { id: 2, name: "Bob" },
+// ];
+
+// // Добавление нового объекта
+// users.push({ id: 3, name: "Charlie" });
+
+// // Попытка добавить объект с отсутствующими полями вызовет ошибку
+// // users.push({ id: 4 }); // Ошибка: Property 'name' is missing in type '{ id: number; }' but required in type 'User'
+
+// console.log(users);
+// // [
+// //   { id: 1, name: "Alice" },
+// //   { id: 2, name: "Bob" },
+// //   { id: 3, name: "Charlie" }
+// // ]
+
+// // ✅ Кортежи (Tuples)
+// // Кортежи — это массивы с фиксированным количеством элементов, где каждый элемент имеет определенный тип.
+
+// // === Примеры простых кортежей ===
+
+// // Кортеж с двумя элементами: строка и число
+// const user: [string, number] = ["Alice", 25];
+
+// // Доступ к элементам кортежа
+// console.log(user[0]); // "Alice"
+// console.log(user[1]); // 25
+
+// // Попытка изменить элемент на значение другого типа вызовет ошибку
+// // user[0] = 123; // Ошибка: Type 'number' is not assignable to type 'string'
+
+// // Добавление нового элемента в кортеж вызовет ошибку
+// // user.push("extra"); // Ошибка: Tuple type '[string, number]' of fixed length 2 cannot have elements added beyond its length
+
+// // === Кортежи с необязательными элементами ===
+
+// // Кортеж с необязательным третьим элементом
+// const userWithOptional: [string, number, string?] = ["Alice", 25];
+
+// // Третий элемент может отсутствовать
+// console.log(userWithOptional); // ["Alice", 25]
+
+// // Добавление третьего элемента
+// userWithOptional[2] = "Developer";
+// console.log(userWithOptional); // ["Alice", 25, "Developer"]
+
+// // === Кортежи с несколькими типами ===
+
+// // Кортеж для хранения идентификатора и данных
+// type DataTuple = [number, string, boolean];
+
+// const data: DataTuple = [1, "Alice", true];
+
+// // Доступ к элементам
+// console.log(data[0]); // 1
+// console.log(data[1]); // "Alice"
+// console.log(data[2]); // true
+
+// // Попытка изменить элемент на значение другого типа вызовет ошибку
+// // data[1] = 123; // Ошибка: Type 'number' is not assignable to type 'string'
+
+// // === Использование кортежей в функциях ===
+
+// // Функция возвращает кортеж
+// function getUserInfo(): [string, number] {
+//   const name = "Alice";
+//   const age = 25;
+//   return [name, age];
+// }
+
+// const [userName, userAge] = getUserInfo();
+// console.log(`Name: ${userName}, Age: ${userAge}`); // Name: Alice, Age: 25
+
+// // === Комбинирование массивов и кортежей ===
+
+// // Массив кортежей
+// const userData: [number, string][] = [
+//   [1, "Alice"],
+//   [2, "Bob"],
+//   [3, "Charlie"],
+// ];
+
+// // Добавление нового кортежа
+// userData.push([4, "David"]);
+
+// // Попытка добавить кортеж с неправильными типами вызовет ошибку
+// // userData.push(["Eve", 5]); // Ошибка: Type 'string' is not assignable to type 'number'
+
+// console.log(userData);
+// // [
+// //   [1, "Alice"],
+// //   [2, "Bob"],
+// //   [3, "Charlie"],
+// //   [4, "David"]
+// // ]
+
+
+
+
+// ----------------------------------------------------------------------------
+
+
+
+// // === Перечисления (Enums) в TypeScript ===
+
+// // ✅ Числовые перечисления (Numeric Enums)
+// // По умолчанию значения перечисления — это числа, начиная с 0.
+// enum Status {
+//     Pending, // 0
+//     InProgress, // 1
+//     Completed, // 2
+//     Failed, // 3
+//   }
+  
+//   // Использование числового перечисления
+//   const currentStatus: Status = Status.InProgress;
+  
+//   console.log(currentStatus); // 1
+//   console.log(Status[1]); // "InProgress"
+  
+//   // Пример использования в функции
+//   function getStatusMessage(status: Status): string {
+//     switch (status) {
+//       case Status.Pending:
+//         return "The task is pending.";
+//       case Status.InProgress:
+//         return "The task is in progress.";
+//       case Status.Completed:
+//         return "The task is completed.";
+//       case Status.Failed:
+//         return "The task has failed.";
+//       default:
+//         return "Unknown status.";
+//     }
+//   }
+  
+//   console.log(getStatusMessage(currentStatus)); // The task is in progress.
+  
+//   // ✅ Строковые перечисления (String Enums)
+//   // В строковых перечислениях каждому элементу присваивается строковое значение.
+//   enum Role {
+//     Admin = "ADMIN",
+//     User = "USER",
+//     Guest = "GUEST",
+//   }
+  
+//   // Использование строкового перечисления
+//   const userRole: Role = Role.Admin;
+  
+//   console.log(userRole); // "ADMIN"
+  
+//   // Пример использования в функции
+//   function getRolePermissions(role: Role): string {
+//     switch (role) {
+//       case Role.Admin:
+//         return "Admin has full access.";
+//       case Role.User:
+//         return "User has limited access.";
+//       case Role.Guest:
+//         return "Guest has minimal access.";
+//       default:
+//         return "Unknown role.";
+//     }
+//   }
+  
+//   console.log(getRolePermissions(userRole)); // Admin has full access.
+  
+//   // ✅ Гетерогенные перечисления (Heterogeneous Enums)
+//   // Гетерогенные перечисления могут содержать как числа, так и строки.
+//   enum MixedEnum {
+//     Yes = "YES",
+//     No = 0,
+//   }
+  
+//   console.log(MixedEnum.Yes); // "YES"
+//   console.log(MixedEnum.No); // 0
+  
+//   // ✅ Пример использования перечислений в реальной жизни
+  
+//   // Перечисление для дней недели
+//   enum DaysOfWeek {
+//     Monday = "MON",
+//     Tuesday = "TUE",
+//     Wednesday = "WED",
+//     Thursday = "THU",
+//     Friday = "FRI",
+//     Saturday = "SAT",
+//     Sunday = "SUN",
+//   }
+  
+//   // Функция для проверки рабочего дня
+//   function isWorkingDay(day: DaysOfWeek): boolean {
+//     switch (day) {
+//       case DaysOfWeek.Saturday:
+//       case DaysOfWeek.Sunday:
+//         return false; // Выходные
+//       default:
+//         return true; // Рабочие дни
+//     }
+//   }
+  
+//   console.log(isWorkingDay(DaysOfWeek.Monday)); // true
+//   console.log(isWorkingDay(DaysOfWeek.Sunday)); // false
+  
+//   // ✅ Перечисления с явным указанием значений
+//   // Можно явно указать значения для элементов перечисления.
+//   enum HttpStatus {
+//     OK = 200,
+//     BadRequest = 400,
+//     Unauthorized = 401,
+//     Forbidden = 403,
+//     NotFound = 404,
+//   }
+  
+//   // Использование перечисления
+//   const responseStatus: HttpStatus = HttpStatus.OK;
+  
+//   console.log(responseStatus); // 200
+//   console.log(HttpStatus[200]); // "OK"
+  
+//   // ✅ Перечисления и их типы
+//   // Перечисления можно использовать как типы для переменных и параметров функций.
+//   function handleResponse(status: HttpStatus): void {
+//     if (status === HttpStatus.OK) {
+//       console.log("Request succeeded.");
+//     } else if (status === HttpStatus.NotFound) {
+//       console.log("Resource not found.");
+//     } else {
+//       console.log("An error occurred.");
+//     }
+//   }
+  
+//   handleResponse(HttpStatus.OK); // Request succeeded.
+//   handleResponse(HttpStatus.NotFound); // Resource not found.
+  
+  
+//   // ✅ Перечисления и автодополнение
+//   // IDE (например, VS Code) подсказывает доступные значения перечисления.
+//   const day: DaysOfWeek = DaysOfWeek.Friday;
+//   console.log(day); // "FRI"
+
+// ----------------------------------------------------------------------------
+
+
+
+// // === Литеральные типы (Literal Types) в TypeScript ===
+
+// // ✅ Пример 1: Строковые литеральные типы
+// // Переменная может принимать только одно из указанных строковых значений
+// let direction: "up" | "down" | "left" | "right";
+
+// direction = "up"; // ОК
+// direction = "down"; // ОК
+// // direction = "forward"; // Ошибка: Type '"forward"' is not assignable to type '"up" | "down" | "left" | "right"'
+
+// console.log(`Direction: ${direction}`); // Direction: down
+
+// // ✅ Пример 2: Числовые литеральные типы
+// // Переменная может принимать только одно из указанных числовых значений
+// let statusCode: 200 | 400 | 404 | 500;
+
+// statusCode = 200; // ОК
+// statusCode = 404; // ОК
+// // statusCode = 201; // Ошибка: Type '201' is not assignable to type '200 | 400 | 404 | 500'
+
+// console.log(`Status Code: ${statusCode}`); // Status Code: 404
+
+// // ✅ Пример 3: Булевые литеральные типы
+// // Переменная может быть только true или false
+// let isEnabled: true | false;
+
+// isEnabled = true; // ОК
+// isEnabled = false; // ОК
+// // isEnabled = "true"; // Ошибка: Type '"true"' is not assignable to type 'true | false'
+
+// console.log(`Is Enabled: ${isEnabled}`); // Is Enabled: false
+
+// // ✅ Пример 4: Литеральные типы в функциях
+// // Функция принимает только определенные значения в качестве аргументов
+// function setAlignment(alignment: "left" | "center" | "right"): void {
+//   console.log(`Alignment set to: ${alignment}`);
+// }
+
+// setAlignment("left"); // ОК
+// setAlignment("center"); // ОК
+// // setAlignment("top"); // Ошибка: Argument of type '"top"' is not assignable to parameter of type '"left" | "center" | "right"'
+
+// // ✅ Пример 5: Литеральные типы с объединениями (Union Types)
+// // Литеральные типы можно комбинировать с другими типами
+
+// type ButtonSize = "small" | "medium" | "large";
+// type ButtonColor = "primary" | "secondary" | "danger";
+
+// type Button = {
+//   size: ButtonSize;
+//   color: ButtonColor;
+// }
+
+// const button: Button = {
+//   size: "medium",
+//   color: "primary",
+// };
+
+// console.log(`Button: size=${button.size}, color=${button.color}`); // Button: size=medium, color=primary
+
+
+
+
+
+
+
+// ----------------------------------------------------------------------------
+
+
+// // === Дженерики (Generics) в TypeScript ===
+
+// // Дженерики (Generics) — это мощный инструмент TypeScript, 
+// // который позволяет создавать обобщенные функции, классы и интерфейсы. 
+// // Они позволяют работать с типами, которые задаются при вызове, 
+// // обеспечивая гибкость и безопасность типов.
+
+
+
+// // ✅ Пример 1: Обобщенная функция
+// // Функция, которая возвращает переданное значение
+// function identity<T>(value: T): T {
+//     return value;
+//   }
+  
+//   // Использование функции с разными типами
+//   const numberValue = identity<number>(1); // Тип T = number
+//   const stringValue = identity<string>("Hello"); // Тип T = string
+//   const booleanValue = identity<boolean>(true); // Тип T = boolean
+  
+//   console.log(numberValue); // 42
+//   console.log(stringValue); // Hello
+//   console.log(booleanValue); // true
+  
+//   // ✅ Пример 2: Обобщенные массивы
+//   // Функция для работы с массивами
+//   function getFirstElement<T>(array: T[]): T {
+//     return array[0];
+//   }
+  
+//   const numbers = [1, 2, 3];
+//   const strings = ["Alice", "Bob", "Charlie"];
+  
+//   console.log(getFirstElement<number>(numbers)); // 1
+//   console.log(getFirstElement(strings)); // Alice
+  
+//   // ✅ Пример 3: Обобщенные интерфейсы
+//   // Интерфейс с дженериком
+//   type Box<T> = {
+//     value: T;
+//   }
+  
+//   const numberBox: Box<number> = { value: 42 };
+//   const stringBox: Box<string> = { value: "Hello" };
+// //   const someBox: Box = { value: "Hello" };  Generic type 'Box' requires 1 type argument(s)
+  
+//   console.log(numberBox.value); // 42
+//   console.log(stringBox.value); // Hello
+  
+//   // ✅ Пример 6: Объединение дженериков
+//   // Функция объединяет два объекта
+//   function merge<T, U>(obj1: T, obj2: U): T & U {
+//     return { ...obj1, ...obj2 };
+//   }
+  
+//   const mergedObject = merge({ name: "Alice" }, { age: 25 });
+//   console.log(mergedObject); // { name: "Alice", age: 25 }
+  
+//   // ✅ Пример 7: Обобщенные типы
+//   // Тип с дженериком
+//   type KeyValuePair<K, V> = {
+//     key: K;
+//     value: V;
+//   };
+  
+//   const pair: KeyValuePair<string, number> = { key: "id", value: 42 };
+//   console.log(pair); // { key: "id", value: 42 }
+  
+  
+
+
+
+
+
+// ----------------------------------------------------------------------------
+
+
 
 // console.log("=== Примеры приведения типов в TypeScript ===");
 
