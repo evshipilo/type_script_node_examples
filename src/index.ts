@@ -534,7 +534,7 @@
 //   // Использование функции с разными типами
 //   const numberValue = identity<number>(1); // Тип T = number
 //   const stringValue = identity<string>("Hello"); // Тип T = string
-//   const booleanValue = identity<boolean>(true); // Тип T = boolean
+//   const booleanValue = identity(true); // Тип T = boolean
   
 //   console.log(numberValue); // 42
 //   console.log(stringValue); // Hello
@@ -550,7 +550,7 @@
 //   const strings = ["Alice", "Bob", "Charlie"];
   
 //   console.log(getFirstElement<number>(numbers)); // 1
-//   console.log(getFirstElement(strings)); // Alice
+//   console.log(getFirstElement<string>(strings)); // Alice
   
 //   // ✅ Пример 3: Обобщенные интерфейсы
 //   // Интерфейс с дженериком
@@ -576,8 +576,8 @@
   
 //   // ✅ Пример 7: Обобщенные типы
 //   // Тип с дженериком
-//   type KeyValuePair<K, V> = {
-//     key: K;
+//   type KeyValuePair<WWW, V> = {
+//     key: WWW;
 //     value: V;
 //   };
   
